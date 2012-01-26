@@ -2,9 +2,9 @@
 '''
 @author: Daouzli
 '''
-import SnGui      #container for ip->account->contact
-import SnInterf   #gtk window with the treeview
-import SnProtocol #filtering packets with msn protocol
+from SnGui import SnGui      #container for ip->account->contact
+from SnInterf import SnInterf   #gtk window with the treeview
+from SnProtocol import SnProtocol #filtering packets with msn protocol
 
 import re
 import sys
@@ -53,9 +53,9 @@ def det_IP_packet(addr):
     if addr not in ips.keys():
         ips[addr]={}
         g.add_ip(addr)
-        #tvSn.Create_Sn_Tree()
-        #tvSn.Update_Sn_Tree()
-        tvSn.AddIfNot_Sn_ip_Tree(addr)
+        #tvSn.create_sn_tree()
+        #tvSn.update_sn_tree()
+        tvSn.add_if_not_sn_ip_tree(addr)
    
 def det_elems_data(data,src,dst):
     """det_elems_data(data,src,dst): analyse the data from packet sent from src IP to dst IP"""
@@ -80,9 +80,9 @@ def det_elems_data(data,src,dst):
             g.add_ip(adrip)
         if g.ip(adrip).is_account(adr.strip())==False:
             g.ip(adrip).add_account(adr.strip())
-            tvSn.AddIfNot_Sn_account_Tree(adrip,adr.strip())
-        #tvSn.Create_Sn_Tree()
-        #tvSn.Update_Sn_Tree()
+            tvSn.add_if_not_sn_account_tree(adrip,adr.strip())
+        #tvSn.create_sn_tree()
+        #tvSn.update_sn_tree()
         #print ">>"+adrip+"->"+
         #g.ip(adrip).account(adr.strip()).add_to_speech("[scribing]")
                     
@@ -94,10 +94,10 @@ def det_elems_data(data,src,dst):
                 g.add_ip(adrip)
             if g.ip(adrip).account_id(0).is_contact(mail)==False: #does this contact exists
                 g.ip(adrip).account_id(0).add_contact(mail)
-                tvSn.AddIfNot_Sn_contact_Tree(adrip,g.ip(adrip).account_id(0).account,mail)
+                tvSn.add_if_not_sn_contact_tree(adrip,g.ip(adrip).account_id(0).account,mail)
             g.ip(adrip).account_id(0).contact(mail).add_to_speech(msg+'\n') #add the message to the contact
             tvSn.show()
-            #tvSn.Create_Sn_Tree()
+            #tvSn.create_sn_tree()
 
 
 def process_packet(pktlen, data, timestamp):
@@ -137,8 +137,8 @@ if __name__=="__main__":
     net, mask = pcap.lookupnet(dev)
     p.open_live(dev, 1600, 0, 100)
     p.setfilter(port_ecoute, 0, 0)
-    g=SnGui.Sn_Gui() #container for ip->account->contact
-    tvSn=SnInterf.Sn_Gtk_Window(g) #gtk window with the treeview
+    g=SnGui.SnGui() #container for ip->account->contact
+    tvSn=SnInterf.SnGtkWindow(g) #gtk window with the treeview
     prot=SnProtocol.SnProtocol() #filtering packets with msn protocol
 
     main(p)
