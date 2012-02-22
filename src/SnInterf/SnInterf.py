@@ -5,7 +5,7 @@
 '''
 
 
-import SnGui #container for ip->account->contact
+import SnGui #container for ip -> account -> contact
 
 import pygtk
 pygtk.require('2.0')
@@ -15,7 +15,7 @@ import gtk
 class SnGtkWindow():
     """Class containing the GtkWindow and the treeview"""
     # close the window and quit
-    def delete_event(self, widget, event, data=None):
+    def delete_event(self, widget, event, data=none):
         gtk.main_quit()
         return False
 
@@ -35,7 +35,7 @@ class SnGtkWindow():
         self.treeview = gtk.TreeView(self.explorer_tree)
         treeselection = self.treeview.get_selection()
         treeselection.set_mode(gtk.SELECTION_SINGLE)
-        self.treeview.connect("row-activated", self.selection)
+        self.treeview.connect("row - activated", self.selection)
           
         # create the TreeViewColumn to display the data
         self.tvcolumn = gtk.TreeViewColumn('Explorer')
@@ -55,7 +55,7 @@ class SnGtkWindow():
         
         # make it searchable
         self.treeview.set_search_column(0)
-        #scrolltreeview = gtk.VScrollbar(adjustment=None)
+        #scrolltreeview = gtk.VScrollbar(adjustment = None)
         #scrolltreeview.add_child(self.treeview)
         
         #create the data window
@@ -74,7 +74,7 @@ class SnGtkWindow():
         self.data_win.pack_start(self.data_window, True, True, 0)
         
         #treeview is placed on the left, then its vscrollbar, and then the data window on the right
-        self.tvscrv=gtk.VScrollbar(self.treeview.get_vadjustment())
+        self.tvscrv = gtk.VScrollbar(self.treeview.get_vadjustment())
         self.gui.pack_start(self.treeview, True, True, 10)
         self.gui.pack_start(self.tvscrv, True, True, 10)
         self.gui.pack_start(self.data_win, True, True, 10)
@@ -86,13 +86,13 @@ class SnGtkWindow():
 
         self.window.show_all()
 
-    def selection(self, widget, event, data=None):
+    def selection(self, widget, event, data=none):
         """selection(): shows the selected contact item in data window label zone, 
                         and if there is a speech, shows it on the speech zone.
                         if the selection is not a contact, it expands or collapses the child rows """
         if len(event) == 3: #work only in the 3rd level (selection of a contact)
-            ip,acc,cont = event
-            s = '%s->%s->%s' %  (self.sn.ip_id(ip).ip,
+            ip, acc, cont = event
+            s = '%s -> %s -> %s' %  (self.sn.ip_id(ip).ip,
                                      self.sn.ip_id(ip).account_id(acc).account,
                                      self.sn.ip_id(ip).account_id(acc).contact_id(cont).contact)
             self.set_label_selected(s)
@@ -105,19 +105,27 @@ class SnGtkWindow():
                 self.treeview.expand_row(event, False)
     
     def config_data_window(self):
-        """config_data_window(): creates the data window zone (right part)"""
+        """ creates the data window zone (right part)"""
         self.data_window.set_tab_pos(2) #the tabs will be placed on the top
         label = gtk.Label("Speech")#the first tab's label is Speech
         self.data_window.append_page(self.label_speech, label)#add the speech zone to the data window notebook
         self.window.show_all()
         
     def set_label_selected(self, label):
-        """set_label_speech(speech): Sets the text of the speech showed on the data window speech tab"""
+"""set_label_speech(speech): Sets the text of the speech showed on the data window speech tab
+
+@param label: TODO
+
+"""
         self.label_select.set_text(label)
         self.window.show_all()
         
     def set_label_speech(self, speech):
-        """set_label_speech(speech): Sets the text of the speech showed on the data window speech tab"""
+"""Sets the text of the speech showed on the data window speech tab
+
+@param speech: TODO
+
+"""
         self.label_speech.set_text(speech)
         self.window.show_all()
         
@@ -126,45 +134,49 @@ class SnGtkWindow():
         sn = self.sn
         self.explorer_tree.clear()
         for ip in sn.list_ips():
-            parent_ip=self.explorer_tree.append(None, ['%s' % sn.ip(ip).ip])
+            parent_ip = self.explorer_tree.append(None, ['%s' % sn.ip(ip).ip])
             print("i" + str(parent_ip))
             for acc in sn.ip(ip).list_accounts():
-                child_acc=self.explorer_tree.append(parent_ip, ['%s' % sn.ip(ip).account(acc).account])
+                child_acc = self.explorer_tree.append(parent_ip, ['%s' % sn.ip(ip).account(acc).account])
                 print("  a" + str(child_acc))
                 for cont in sn.ip(ip).account(acc).list_contacts():
                     print("     " + str(self.explorer_tree.append(child_acc, ['%s' % sn.ip(ip).account(acc).contact(cont).contact])))
         self.window.show_all()
     
     def update_sn_tree(self):
-        """update_sn_tree(): Searchs in Sn object if there are data not yet in the tree and update it if necessary"""
+        """ Searchs in Sn object if there are data not yet in the tree and update it if necessary"""
         sn = self.sn
         tr = self.explorer_tree
         for ip in sn.list_ips():
             self.add_if_not_sn_ip_tree(ip)
             for acc in sn.ip(ip).list_accounts():
-                self.add_if_not_sn_account_tree(ip,acc)
+                self.add_if_not_sn_account_tree(ip, acc)
                 for cont in sn.ip(ip).account(acc).list_contacts():
-                    self.add_if_not_sn_contact_tree(ip,acc,cont)
+                    self.add_if_not_sn_contact_tree(ip, acc, cont)
         
     def show(self):
         self.window.show_all()
         
-    def add_if_not_sn_ip_tree(self,ip):
-        """add_if_not_sn_ip_tree(ip): add the ip to the tree if doesn't exists and return the iter"""
-        tr=self.explorer_tree
-        nb=tr.iter_n_children(None)
-        is_ip=False
+    def add_if_not_sn_ip_tree(self, ip):
+"""add the ip to the tree if doesn't exists and return the iter
+
+@param ip: TODO
+
+"""
+        tr = self.explorer_tree
+        nb = tr.iter_n_children(None)
+        is_ip = False
         for i in range(nb):
-            ipiter=tr.iter_nth_child(None,i)
-            if tr.get_value(ipiter,0)==ip:
-                is_ip=True
+            ipiter = tr.iter_nth_child(None, i)
+            if tr.get_value(ipiter, 0) == ip:
+                is_ip = True
                 break
-        if is_ip==False:
-            ipiter=self.explorer_tree.append(None, ['%s' % ip])
+        if is_ip == False:
+            ipiter = self.explorer_tree.append(None, ['%s' % ip])
         return ipiter
             
     def add_if_not_sn_account_tree(self, ip, acc):
-        """add_if_not_sn_account_tree(ip,acc): add the ip->acc to the tree if doesn't exists and return the iter"""
+"""add_if_not_sn_account_tree(ip, acc): add the ip -> acc to the tree if doesn't exists and return the iter
         ipiter = self.add_if_not_sn_ip_tree(ip)
         tr = self.explorer_tree
         is_acc = False
@@ -179,7 +191,7 @@ class SnGtkWindow():
         return acciter
 
     def add_if_not_sn_contact_tree(self, ip, acc, cont):
-        """add_if_not_sn_contact_tree(ip,acc,cont): add the ip->acc->cont to the tree if doesn't exists and return the iter"""
+"""add_if_not_sn_contact_tree(ip, acc, cont): add the ip -> acc -> cont to the tree if doesn't exists and return the iter
         acciter = self.add_if_not_sn_account_tree(ip, acc)
         tr = self.explorer_tree
         is_cont = False
@@ -198,8 +210,8 @@ if __name__ == "__main__":
     def main():
         gtk.main()
 
-    g=SnGui.SnGui()
-    tvSn=SnGtkWindow(g)
+    g = SnGui.SnGui()
+    tvSn = SnGtkWindow(g)
 
     g.add_ip("192.168.0.10")
     g.ip("192.168.0.10").add_account("popo@hotmail.com")
@@ -219,14 +231,14 @@ if __name__ == "__main__":
 
     g.add_ip("192.168.0.1")
     tvSn.create_sn_tree()
-    tvSn.add_if_not_sn_account_tree("192.168.0.11","luf@hotmail.ci")
+    tvSn.add_if_not_sn_account_tree("192.168.0.11", "luf@hotmail.ci")
     g.add_ip("192.168.0.11")
     g.ip("192.168.0.11").add_account("luf@hotmail.ci")
     g.ip("192.168.0.11").account("luf@hotmail.ci").add_contact("lulu")
-    tvSn.add_if_not_sn_account_tree("192.168.0.10","luf@hotmail.ci")
+    tvSn.add_if_not_sn_account_tree("192.168.0.10", "luf@hotmail.ci")
     tvSn.update_sn_tree()
     tvSn.show()
     #tvSn.set_label_speech(g.ip("192.168.0.3").account("piouf@hotmail.com").contact("nun").speech)
-    #tvSn.set_label_selected("192.168.0.3->piouf@hotmail.com->nun")
+    #tvSn.set_label_selected("192.168.0.3 -> piouf@hotmail.com -> nun")
     main()
 

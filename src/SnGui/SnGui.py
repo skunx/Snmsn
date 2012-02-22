@@ -5,7 +5,7 @@
 '''
 
 class SnGui(object):
-    '''class containing the structure ip->account->contact'''
+    '''class containing the structure ip -> account -> contact'''
     def __init__(self):
         self.data = []
         '''list of ips'''
@@ -33,7 +33,7 @@ class SnGui(object):
         return None
 
     def list_ips(self):
-        '''"Retrieve the list of ips
+        '''Retrieve the list of ips
         
         @return: list of ip
         
@@ -56,7 +56,7 @@ class SnGui(object):
         @return: True if exists or False
         
         '''
-        return True if len([d.data for d in self.data if d.ip==ip])>0 else False
+        return True if len([d.data for d in self.data if d.ip == ip]) > 0 else False
 
 
 
@@ -114,7 +114,7 @@ class Sn_IP():
         @return: True if account exists for this ip or else False
         
         '''
-        return True if len([d.data for d in self.data if d.account==account])>0 else False
+        return True if len([d.data for d in self.data if d.account == account]) > 0 else False
     
    
 
@@ -176,7 +176,7 @@ class Sn_Account():
         @return: True if contact exists for this account else False
         
         '''
-        return True if len([d for d in self.data if d.contact==contact])>0 else False
+        return True if len([d for d in self.data if d.contact == contact]) > 0 else False
 
 
 class Sn_Contact():
@@ -207,8 +207,8 @@ class Sn_Contact():
         self.speech += speech
 
 
-if __name__=="__main__":
-    g=SnGui()
+if __name__ == "__main__":
+    g = SnGui()
     g.add_ip("192.168.0.10")
     g.add_ip("192.168.0.3")
     g.ip("192.168.0.10").add_account("popo@hotmail.com")
@@ -222,7 +222,7 @@ if __name__=="__main__":
     print g.ip("192.168.0.10").list_accounts()
     print g.ip("192.168.0.3").list_accounts()
     g.add_ip("192.168.0.10")
-    if g.is_ip("192.168.0.10")==True:
+    if g.is_ip("192.168.0.10") == True:
        print "ya 192.168.0.10!!" 
     else:
        print "ya pas :("
@@ -231,11 +231,11 @@ if __name__=="__main__":
     print g.ip("192.168.0.10").account("didi@hotmail.com").contact("coco").speech
     g.ip("192.168.0.10").add_account("popo@hotmail.com")
     print g.ip("192.168.0.10").account("popo@hotmail.com").account
-#    g.add_acc_to_ip("192.168.0.10","popo@hotmail.com")
-#    g.add_acc_to_ip("192.168.0.10","didi@hotmail.com")
-#    g.add_contact_to_acc_ip("192.168.0.10","didi@hotmail.com","coco")
-#    g.add_contact_to_acc_ip("192.168.0.10","didi@hotmail.com","cocos")
-#    g.add_contact_to_acc_ip("192.168.0.10","didi@hotmail.com","coco")
+#    g.add_acc_to_ip("192.168.0.10", "popo@hotmail.com")
+#    g.add_acc_to_ip("192.168.0.10", "didi@hotmail.com")
+#    g.add_contact_to_acc_ip("192.168.0.10", "didi@hotmail.com", "coco")
+#    g.add_contact_to_acc_ip("192.168.0.10", "didi@hotmail.com", "cocos")
+#    g.add_contact_to_acc_ip("192.168.0.10", "didi@hotmail.com", "coco")
 #    print g.list_acc_per_ip("192.168.0.10")
 
 #    print g.data[0].data[1].acc
