@@ -15,10 +15,10 @@ import socket
 import struct
 import gobject
 
-global g    #class SnGui 
+global g    #class SnGui
 global tvSn #class SnInterf
 global prot #class SnProtocol
-    
+
 protocols = {socket.IPPROTO_TCP:'tcp',
             socket.IPPROTO_UDP:'udp',
             socket.IPPROTO_ICMP:'icmp'}
@@ -47,9 +47,9 @@ ips = {}
 
 
 def det_ip_packet(addr):
-    """add the IP addr to the stored data and add it to the treeview
+    """Add the IP addr to the stored data and add it to the treeview
 
-    @param addr: TODO
+    @param addr: IP address to add
 
     """
     global g, tvSn
@@ -60,13 +60,13 @@ def det_ip_packet(addr):
         #tvSn.create_sn_tree()
         #tvSn.update_sn_tree()
         tvSn.add_if_not_sn_ip_tree(addr)
-   
-def det_elems_data(data, src, dst):
-    """analyse the data from packet sent from src IP to dst IP
 
-    @param data: TODO
-    @param src: TODO
-    @param dst: TODO
+def det_elems_data(data, src, dst):
+    """Analyze the data from packet sent from src IP to dst IP
+
+    @param data: data to analyze
+    @param src: source IP
+    @param dst: target IP
 
     """
     global g, prot, tvSn
@@ -77,14 +77,14 @@ def det_elems_data(data, src, dst):
             print "COMMAND : " + i
 
     prot.set_data(data)
-    if prot.is_email() == True: #if the data contains an email
-        mail = prot.get_email()
+    mail = prot.get_email()
+    if mail == True: #if the data contains an email
         for i in mail:
             print i + " from " + src + " to " + dst
     adrip = dst if src[:6] == '207.46' or src[:4] == '65.5' else src #if M$ server then use the other ip adress
-    
-    if prot.is_typing() == True: #if we have a packet saying that someone is typing a message
-        adr = prot.get_typing()
+
+    adr = prot.get_typing()
+    if adr: #if we have a packet saying that someone is typing a message
         print "typing:" + adr
         if g.is_ip(adrip) == False:
             g.add_ip(adrip)
@@ -95,10 +95,10 @@ def det_elems_data(data, src, dst):
         #tvSn.update_sn_tree()
         #print " >> " + adrip + " -> "+
         #g.ip(adrip).account(adr.strip()).add_to_speech("[scribing]")
-                    
+
     if prot.is_msg() == True: #If we have a chat message
-        if prot.is_msg_received():
-            mail = prot.get_email_msg_sender()
+        mail = prot.get_email_msg_sender()
+        if mail:
             msg = prot.get_msg()
             if g.is_ip(adrip) == False: #does this IP already exists in the SnGui
                 g.add_ip(adrip)
@@ -152,12 +152,12 @@ if __name__ == "__main__":
     prot = SnProtocol.SnProtocol() #filtering packets with msn protocol
 
     main(p)
-    
+
 #    try:
 #        while fin == False:
 #    except KeyboardInterrupt:
 #        print '%s' % sys.exc_type
 #        print 'shutting down'
 #        print '%d packets received, %d packets dropped, %d packets dropped by interface' %  p.stats()
-    
+
 
